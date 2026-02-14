@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramesh Homes · Real Estate</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Complete style here - same as previous */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #f5efe6; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+        .main-container { max-width: 1300px; width: 100%; background: #ffffffd9; backdrop-filter: blur(2px); border-radius: 2.5rem; box-shadow: 0 20px 40px -10px rgba(0,40,20,0.25); border: 1px solid #c0b7a8; padding: 2rem 2.2rem; }
+        .header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; border-bottom: 2px solid #0b4f3a30; padding-bottom: 1rem; margin-bottom: 2rem; }
+        .logo h1 { font-size: 2.5rem; font-weight: 600; color: #0b4f3a; letter-spacing: -0.02em; }
+        .logo span { font-size: 1rem; background: #0b4f3a; color: #f5efe6; padding: 0.2rem 1rem; border-radius: 30px; margin-left: 0.5rem; }
+        .nav-buttons { display: flex; gap: 1rem; }
+        .nav-btn { background: #ffffff; border: 2px solid #0b4f3a; color: #0b4f3a; padding: 0.7rem 2rem; border-radius: 40px; font-size: 1.1rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; }
+        .nav-btn.active { background: #0b4f3a; color: #f5efe6; }
+        .section { display: none; margin-top: 2rem; }
+        .section.visible { display: block; }
+        .section-title { font-size: 2rem; color: #0b4f3a; margin-bottom: 1.5rem; border-left: 6px solid #0b4f3a; padding-left: 1.2rem; }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 2rem; }
+        .project-card { background: #fefcf7; border-radius: 1.8rem; overflow: hidden; box-shadow: 0 12px 20px -12px #2d3e2d; border: 1px solid #dad3c4; }
+        .card-img { width: 100%; height: 170px; background: #b7aa92; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .card-content { padding: 1.2rem; }
+        .card-title { font-size: 1.3rem; font-weight: 600; color: #1e3a2b; }
+        .card-desc { color: #4f5d4f; margin: 0.5rem 0; }
+        .card-links a { text-decoration: none; background: #e3d9cb; padding: 0.4rem 1rem; border-radius: 30px; color: #0b4f3a; display: inline-flex; align-items: center; gap: 0.4rem; margin-right: 0.5rem; border: 1px solid #b7aa92; }
+        .booking-wrapper { max-width: 600px; margin: 0 auto; }
+        .form-card { background: #fefcf7; border-radius: 2.2rem; padding: 2rem 2.2rem; border: 1px solid #dad3c4; }
+        .form-title { font-size: 1.8rem; color: #0b4f3a; margin-bottom: 1.5rem; }
+        .form-group { margin-bottom: 1.3rem; }
+        label { font-weight: 500; color: #1e3a2b; display: block; margin-bottom: 0.3rem; }
+        input, select, textarea { width: 100%; padding: 0.8rem 1.2rem; background: #ffffff; border: 1.5px solid #cbc1b0; border-radius: 2rem; font-size: 1rem; }
+        .btn-primary { background: #0b4f3a; color: white; border: none; padding: 0.9rem 2rem; border-radius: 3rem; font-weight: 600; font-size: 1.1rem; cursor: pointer; width: 100%; }
+        .admin-footer { text-align: center; margin-top: 2.5rem; padding-top: 1rem; border-top: 1px dashed #b7aa92; }
+        .admin-link { color: #5e6b5e; text-decoration: none; font-size: 0.9rem; padding: 0.3rem 1rem; border-radius: 30px; background: #e3d9cb60; cursor: pointer; }
+        .admin-panel { display: none; margin-top: 2rem; padding: 2rem; background: #f3ede3; border-radius: 2rem; border: 2px solid #0b4f3a; }
+        .admin-panel.visible { display: block; }
+        .flex-row { display: flex; gap: 2rem; flex-wrap: wrap; }
+        .admin-col { flex: 1; min-width: 280px; }
+        .btn-secondary { background: transparent; border: 2px solid #0b4f3a; padding: 0.7rem 1.5rem; border-radius: 3rem; font-weight: 600; color: #0b4f3a; cursor: pointer; margin: 0.5rem 0; }
+        .project-list { background: #fffcf5; border-radius: 1.5rem; padding: 1rem; max-height: 350px; overflow-y: auto; }
+        .project-item { background: #f8f2e8; border-radius: 1rem; padding: 1rem; margin-bottom: 1rem; border-left: 5px solid #0b4f3a; display: flex; justify-content: space-between; align-items: center; }
+        .project-actions button { border: none; padding: 0.4rem 1rem; border-radius: 2rem; cursor: pointer; margin-left: 0.5rem; }
+        .btn-edit { background: #0b4f3a; color: white; }
+        .btn-delete { background: #a15237; color: white; }
+        .bookings-list { background: #fffcf5; border-radius: 1.5rem; padding: 1rem; max-height: 300px; overflow-y: auto; list-style: none; }
+        .bookings-list li { background: #f8f2e8; border-radius: 1rem; padding: 0.8rem; margin-bottom: 0.6rem; border-left: 4px solid #0b4f3a; }
+        .badge { background: #0b4f3a; color: #f5efe6; border-radius: 30px; padding: 0.2rem 0.8rem; }
+    </style>
+</head>
+<body>
+<div class="main-container">
+    <div class="header">
+        <div class="logo"><h1>🏡 Ramesh Homes <span>estate</span></h1></div>
+        <div class="nav-buttons">
+            <button id="btnProjects" class="nav-btn"><i class="fas fa-building"></i> Our Projects</button>
+            <button id="btnBook" class="nav-btn"><i class="fas fa-calendar-check"></i> Book a Visit</button>
+        </div>
+    </div>
+
+    <div id="projectsSection" class="section">
+        <div class="section-title"><i class="fas fa-home"></i> Featured Projects</div>
+        <div id="projectsContainer" class="projects-grid"></div>
+    </div>
+
+    <div id="bookingSection" class="section">
+        <div class="booking-wrapper">
+            <div class="form-card">
+                <div class="form-title"><i class="fas fa-calendar-check"></i> Schedule a visit</div>
+                <form id="bookingForm">
+                    <div class="form-group"><label>Full name</label><input type="text" id="fullName" required></div>
+                    <div class="form-group"><label>Phone number</label><input type="tel" id="phone" required></div>
+                    <div class="form-group"><label>Select project</label><select id="projectSelect" required></select></div>
+                    <div class="form-group"><label>Preferred date & time</label><input type="datetime-local" id="meetingTime" required></div>
+                    <button type="submit" class="btn-primary">Confirm Booking</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-footer"><span class="admin-link" id="adminLink"><i class="fas fa-lock"></i> Admin</span></div>
+
+    <div id="adminPanel" class="admin-panel">
+        <div class="admin-header"><i class="fas fa-user-tie"></i> Admin Dashboard</div>
+        <div class="flex-row">
+            <div class="admin-col">
+                <h3><i class="fas fa-plus-circle"></i> Add / Edit Project</h3>
+                <form id="projectForm">
+                    <input type="hidden" id="editId" value="">
+                    <div class="form-group"><label>Title</label><input type="text" id="projTitle" required></div>
+                    <div class="form-group"><label>Description</label><textarea id="projDesc" rows="2" required></textarea></div>
+                    <div class="form-group"><label>Image URL</label><input type="url" id="projImg"></div>
+                    <div class="form-group"><label>PDF link</label><input type="url" id="projPdf"></div>
+                    <div class="form-group"><label>Map link</label><input type="url" id="projMap"></div>
+                    <button type="submit" class="btn-secondary" id="formSubmitBtn">Add Project</button>
+                    <button type="button" class="btn-secondary" id="cancelEditBtn" style="display:none;">Cancel</button>
+                </form>
+                <h3 style="margin-top:2rem;">Existing Projects</h3>
+                <div id="projectListContainer" class="project-list"></div>
+            </div>
+            <div class="admin-col">
+                <h3>Received Bookings <span id="bookingCount" class="badge">0</span></h3>
+                <ul id="bookingList" class="bookings-list"></ul>
+                <button id="clearBookingsBtn" class="btn-secondary">Clear all</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const PROJECTS_KEY = 'ramesh_projects';
+        const BOOKINGS_KEY = 'ramesh_bookings';
+        const defaultProjects = [
+            { id: 'p1', title: 'Sapphire Villas', description: '4BHK luxury villas with pool', imageUrl: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400', pdfUrl: '#', mapUrl: '#' },
+            { id: 'p2', title: 'Riverfront Towers', description: '2/3BHK apt, clubhouse', imageUrl: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400', pdfUrl: '#', mapUrl: '#' }
+        ];
+        let projects = JSON.parse(localStorage.getItem(PROJECTS_KEY)) || [];
+        if (projects.length === 0) { projects = defaultProjects.map(p => ({ ...p, id: p.id+'-'+Date.now() })); localStorage.setItem(PROJECTS_KEY, JSON.stringify(projects)); }
+        let bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY)) || [];
+
+        // DOM elements
+        const projectsContainer = document.getElementById('projectsContainer');
+        const projectSelect = document.getElementById('projectSelect');
+        const bookingForm = document.getElementById('bookingForm');
+        const projectForm = document.getElementById('projectForm');
+        const editId = document.getElementById('editId');
+        const projTitle = document.getElementById('projTitle');
+        const projDesc = document.getElementById('projDesc');
+        const projImg = document.getElementById('projImg');
+        const projPdf = document.getElementById('projPdf');
+        const projMap = document.getElementById('projMap');
+        const formSubmitBtn = document.getElementById('formSubmitBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const projectListContainer = document.getElementById('projectListContainer');
+        const bookingListEl = document.getElementById('bookingList');
+        const bookingCountSpan = document.getElementById('bookingCount');
+        const clearBookingsBtn = document.getElementById('clearBookingsBtn');
+        const adminPanel = document.getElementById('adminPanel');
+        const adminLink = document.getElementById('adminLink');
+        const btnProjects = document.getElementById('btnProjects');
+        const btnBook = document.getElementById('btnBook');
+        const projectsSection = document.getElementById('projectsSection');
+        const bookingSection = document.getElementById('bookingSection');
+
+        // Navigation
+        btnProjects.addEventListener('click', () => { btnProjects.classList.add('active'); btnBook.classList.remove('active'); projectsSection.classList.add('visible'); bookingSection.classList.remove('visible'); });
+        btnBook.addEventListener('click', () => { btnBook.classList.add('active'); btnProjects.classList.remove('active'); bookingSection.classList.add('visible'); projectsSection.classList.remove('visible'); });
+        btnProjects.classList.add('active'); projectsSection.classList.add('visible');
+
+        function renderProjects() {
+            projectsContainer.innerHTML = '';
+            projects.forEach(p => {
+                projectsContainer.innerHTML += `<div class="project-card"><div class="card-img">${p.imageUrl ? `<img src="${p.imageUrl}">` : '<i class="fas fa-home fa-3x"></i>'}</div><div class="card-content"><div class="card-title">${p.title}</div><div class="card-desc">${p.description}</div><div class="card-links">${p.pdfUrl ? `<a href="${p.pdfUrl}" target="_blank"><i class="fas fa-file-pdf"></i> Brochure</a>` : ''}${p.mapUrl ? `<a href="${p.mapUrl}" target="_blank"><i class="fas fa-map-marked-alt"></i> Map</a>` : ''}</div></div></div>`;
+            });
+            projectSelect.innerHTML = '<option value="">-- select --</option>';
+            projects.forEach(p => projectSelect.innerHTML += `<option value="${p.id}">${p.title}</option>`);
+        }
+
+        function renderAdminList() {
+            projectListContainer.innerHTML = '';
+            projects.forEach(p => {
+                projectListContainer.innerHTML += `<div class="project-item"><div><strong>${p.title}</strong><br><small>${p.description.substring(0,30)}...</small></div><div class="project-actions"><button class="btn-edit" onclick="editProject('${p.id}')">Edit</button><button class="btn-delete" onclick="deleteProject('${p.id}')">Delete</button></div></div>`;
+            });
+        }
+
+        window.editProject = function(id) {
+            let p = projects.find(p => p.id === id);
+            if (!p) return;
+            editId.value = p.id; projTitle.value = p.title; projDesc.value = p.description; projImg.value = p.imageUrl || ''; projPdf.value = p.pdfUrl || ''; projMap.value = p.mapUrl || '';
+            formSubmitBtn.textContent = 'Update Project'; cancelEditBtn.style.display = 'inline-block';
+        };
+        window.deleteProject = function(id) { if (!confirm('Delete?')) return; projects = projects.filter(p => p.id !== id); saveProjects(); if (editId.value === id) cancelEdit(); };
+        function cancelEdit() { editId.value = ''; projectForm.reset(); formSubmitBtn.textContent = 'Add Project'; cancelEditBtn.style.display = 'none'; }
+        cancelEditBtn.addEventListener('click', cancelEdit);
+        function saveProjects() { localStorage.setItem(PROJECTS_KEY, JSON.stringify(projects)); renderProjects(); renderAdminList(); }
+
+        function renderBookings() {
+            bookingListEl.innerHTML = '';
+            if (bookings.length === 0) bookingListEl.innerHTML = '<li>No bookings yet.</li>';
+            else {
+                bookings.sort((a,b)=>new Date(b.meetingTime)-new Date(a.meetingTime)).forEach(b => {
+                    let proj = projects.find(p => p.id === b.projectId) || { title: 'Deleted project' };
+                    bookingListEl.innerHTML += `<li><strong>${b.name}</strong><br>📞 ${b.phone}<br>🏠 ${proj.title}<br>⏱️ ${new Date(b.meetingTime).toLocaleString()}</li>`;
+                });
+            }
+            bookingCountSpan.textContent = bookings.length;
+        }
+        function saveBookings() { localStorage.setItem(BOOKINGS_KEY, JSON.stringify(bookings)); renderBookings(); }
+
+        adminLink.addEventListener('click', () => { if (prompt('Password:') === 'admin123') { adminPanel.classList.add('visible'); renderAdminList(); } else alert('Wrong'); });
+
+        projectForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!adminPanel.classList.contains('visible')) return alert('Unlock admin first');
+            let title = projTitle.value.trim(), desc = projDesc.value.trim();
+            if (!title || !desc) return alert('Required');
+            if (editId.value) {
+                let idx = projects.findIndex(p => p.id === editId.value);
+                if (idx !== -1) projects[idx] = { ...projects[idx], title, description: desc, imageUrl: projImg.value.trim(), pdfUrl: projPdf.value.trim(), mapUrl: projMap.value.trim() };
+            } else {
+                projects.push({ id: Date.now()+'-'+Math.random(), title, description: desc, imageUrl: projImg.value.trim(), pdfUrl: projPdf.value.trim(), mapUrl: projMap.value.trim() });
+            }
+            saveProjects(); projectForm.reset(); editId.value = ''; formSubmitBtn.textContent = 'Add Project'; cancelEditBtn.style.display = 'none';
+        });
+
+        bookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let name = document.getElementById('fullName').value.trim(), phone = document.getElementById('phone').value.trim(), pid = document.getElementById('projectSelect').value, time = document.getElementById('meetingTime').value;
+            if (!name || !phone || !pid || !time) return alert('All fields');
+            if (phone.replace(/\D/g,'').length < 10) return alert('Valid phone');
+            bookings.push({ id: Date.now()+'-'+Math.random(), name, phone, projectId: pid, meetingTime: time, submittedAt: new Date().toISOString() });
+            saveBookings(); alert('Booking confirmed!'); bookingForm.reset();
+        });
+
+        clearBookingsBtn.addEventListener('click', () => {
+            if (!adminPanel.classList.contains('visible')) return alert('Unlock admin');
+            if (bookings.length && confirm('Delete all?')) { bookings = []; saveBookings(); }
+        });
+
+        renderProjects(); renderBookings();
+    })();
+</script>
+</body>
+</html>
